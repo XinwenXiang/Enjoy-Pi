@@ -1,4 +1,6 @@
-# 02 · Durable AgentHarness 设计
+# 02 · Durable AgentHarness 设计（历史笔记）
+
+**2026-10-14 状态修正：**本页保留初版 `56f3f33` 的设计解释。旧 Harness 后来已有可运行实现，并在 v1.0.0 从 agent-core 删除；当前入口是独立、仍实验性的 `packages/durable`。下面的 Registers、Lane、Operation 和 Usage ledger 是历史设计术语，不能当作当前 API。请先读 [03 · 架构演进](./03-architecture-evolution.md)。
 
 ## 为什么最小 Agent 不够
 
@@ -61,12 +63,13 @@ TX 2: 原子写入输出、usage 与下一 operation state
 
 这个设计明确管理不确定性，但不能凭空让外部系统具备 exactly-once 语义。
 
-## 当前实现状态
+## 当时的实现状态与当前入口
 
-阅读 `packages/agent/src/harness/agent-harness.ts` 时会看到大量：
+初版快照中的 `AgentHarness` 公开方法有 `unavailable()` / `HarnessNotImplemented`。这个结论不再描述当前 main。
 
-```ts
-return this.unavailable("prompt");
-```
+- 2026-09：旧 Harness 已推进为可运行实验 runtime；Pico 随后移入独立 durable 包。
+- 2026-10-01 / v1.0.0：旧 `AgentHarness` 与 `./harness/*` 等 exports 从 agent-core 删除。
+- 本次快照：使用 `@earendil-works/pi-durable` 的 `Harness / Conversation / Submission / Task / Document`。概念映射与路径见 03；这不是只改 import 名称即可完成的兼容迁移。
+- 普通 Pi CLI 仍由 `AgentSession + Agent + agent-loop` 驱动。
 
-这说明公开 API 与部分 session/storage 基础设施已经形成，但完整解释器仍在建设。当前 Pi Coding Agent 的实际应用编排仍主要由 `AgentSession` 完成。
+[当前 pi-durable README](https://github.com/earendil-works/pi/blob/60ac3bcc3b8d6df34a44c0ed677a9eb9c74e52ac/packages/durable/README.md) · [历史 Harness 文档（固定旧快照）](https://github.com/earendil-works/pi/blob/56f3f33/packages/agent/docs/harness.md)

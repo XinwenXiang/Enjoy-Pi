@@ -1,5 +1,7 @@
 # 00 · Agent-loop 零基础
 
+2026-10-14 校注：下面是最小心智模型。MCP 工具也进入同一循环；当前真实 loop 还有 `finishTurn`、steering/follow-up 等继续/停止条件，不能只凭“没有 tool call”判断所有运行。参见 [03 · 架构演进](./03-architecture-evolution.md)。
+
 ## 1. 先看普通 Chatbot
 
 普通 Chatbot 通常只调用模型一次：
